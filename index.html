@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>The Mandrake's Cry</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="shell">
+
+  <!-- ================= PAGE 1 : COVER ================= -->
+  <div id="page-cover" class="page active">
+    <canvas id="coverCanvas" class="cover-canvas"></canvas>
+    <div class="cover-shade"></div>
+    <div class="relative z-20 flex-1 flex flex-col p-4 pt-7">
+      <div class="text-center">
+        <h1 id="coverTitle" class="pixel text-white leading-[1.55] mt-2" style="font-size:clamp(20px,6.4vw,calc(28px*var(--u)))">THE<br>MANDRAKE'S<br>CRY</h1>
+        <div class="pixel text-[7px] mt-3 text-[#bdf0cd]" style="text-shadow:1px 1px 0 #04150f">BY: ETERNITYLL0VE</div>
+      </div>
+      <div class="flex-1"></div>
+      <div class="mx-auto mb-2 pixel text-[7px] leading-[2.2] text-center text-[#f0fff4] bg-black/55 px-3 py-2 rounded-lg w-full col cover-legend" style="border:2px solid rgba(180,255,200,.35)">
+        <span class="text-yellow-300">DON'T LISTEN TO THE SCREAM!</span>
+      </div>
+      <div class="mt-1 flex flex-col gap-2 pb-1 col cover-btns">
+        <button id="btnStart" class="btn-pixel btn-yellow w-full btn-glow flex items-center justify-center gap-3">
+          <svg viewBox="0 0 5 9" width="15" height="27" shape-rendering="crispEdges" aria-hidden="true"><g fill="#3a2400">
+            <rect x="0" y="0" width="1" height="1"/><rect x="0" y="1" width="2" height="1"/><rect x="0" y="2" width="3" height="1"/><rect x="0" y="3" width="4" height="1"/><rect x="0" y="4" width="5" height="1"/><rect x="0" y="5" width="4" height="1"/><rect x="0" y="6" width="3" height="1"/><rect x="0" y="7" width="2" height="1"/><rect x="0" y="8" width="1" height="1"/>
+          </g></svg>
+          START ADVENTURE
+        </button>
+        <button id="btnHow" class="btn-pixel btn-white w-full" style="font-size:calc(10px*var(--u))">? HOW TO PLAY</button>
+      </div>
+    </div>
+    <div id="howModal" class="absolute inset-0 bg-black/70 hidden items-center justify-center p-6 z-50">
+      <div class="bg-[#fffbe8] border-4 border-[#12332b] rounded-2xl p-5 max-w-[360px] text-sm leading-relaxed how-card">
+        <div class="pixel text-[11px] mb-2">HOW TO PLAY</div>
+        <b>Goal:</b> Walk right to reach the giant Mandrake &amp; bury it back underground!<br><br>
+        <b>When it LOOKS AWAY (green):</b> RUN! Hold <b>RIGHT / D </b><br>
+        <b>When it STARES + SCREAMS (red + waves):</b> STOP &amp; <b>COVER EARS</b>! Hold <b>DOWN</b> / <b>S</b><br><br>
+        If you listen to the scream, HP drops! HP 0 = faint!<br>
+        At the end, mash the BURY button!
+        <div class="mt-3 text-center">
+          <button id="btnCloseHow" class="btn-pixel" style="font-size:calc(10px*var(--u))">GOT IT!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2 : LOADING ================= -->
+  <div id="page-loading" class="page justify-center p-4">
+    <canvas id="loadBg" class="cover-canvas"></canvas>
+    <div class="glass gloss p-6 text-center relative">
+      <div class="pixel text-[10px] text-white/80 load-head">NOW LOADING...</div>
+      <div class="relative mx-auto" style="max-width:calc(360px*var(--u))">
+        <canvas id="loadCanvas" width="64" height="88" style="width:64px;height:88px;position:absolute;top:-64px;left:0;z-index:5"></canvas>
+        <div id="loadBarWrap"><div id="loadBar"></div></div>
+        <div class="pixel text-white mt-3 text-lg tracking-widest">LOADING<span id="dots">.</span></div>
+        <div class="pixel text-[9px] text-[#bdf0cd] mt-1">the mandrake is tangling its roots...</div>
+        <div class="pixel text-[10px] text-yellow-300 mt-3"><span id="loadPct">0%</span></div>
+        <div id="loadTip" class="pixel text-[8px] text-white mt-4 px-3 py-2 rounded-lg" style="background:rgba(0,0,0,.4);border:2px solid rgba(255,223,107,.45);line-height:1.8"></div>
+      </div>
+      <div class="mt-6 -mx-6 -mb-6">
+        <canvas id="loadDecor" width="120" height="26" style="display:block;width:100%;height:78px"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3 : GAME ================= -->
+  <div id="page-game" class="page">
+    <div class="flex items-center gap-2 hud pt-2 pb-1 bg-[#0f3d32] text-white z-20">
+      <div class="flex-1">
+        <div class="pixel text-[7px] mb-1">PROGRESS <span id="progTxt">0%</span></div>
+        <div class="hud-bar"><div id="progFill" class="hud-fill" style="width:0%;background:#ffdf6b"></div></div>
+      </div>
+      <div class="flex-1">
+        <div class="pixel text-[7px] mb-1">HP <span id="hpTxt">100</span></div>
+        <div class="hud-bar"><div id="hpFill" class="hud-fill" style="width:100%;background:#4ade80"></div></div>
+      </div>
+      <div class="pixel text-[8px] text-right" style="line-height:1.7">TIME <span id="timeTxt">0</span><br>
+        <button id="muteBtn" class="bg-white/20 border-2 border-white/40 px-2 py-[3px] rounded text-[7px]" style="cursor:pointer">SOUND ON</button>
+      </div>
+    </div>
+    <div id="statusBanner" class="pixel text-center text-[10px] py-2 bg-[#4ade80] text-[#0f2f0a] border-y-4 border-black z-20">&raquo; SAFE! RUN RIGHT &laquo;</div>
+    <div class="relative flex-1 overflow-hidden bg-[#1a4a3e]">
+      <canvas id="gameCanvas" class="absolute inset-0 w-full h-full"></canvas>
+      <div id="dmgFlash" class="flash-red"></div>
+      <div id="coverIcon" class="absolute left-1/2 -translate-x-1/2 top-3 pixel text-[9px] bg-black/75 text-yellow-300 px-3 py-2 rounded-lg hidden z-10" style="border:2px solid rgba(255,223,107,.6)">EARS COVERED - SAFE</div>
+
+      <div id="introOverlay" class="absolute inset-0 bg-black/70 flex items-center justify-center p-5 z-30">
+        <div class="bg-[#fffbe8] border-4 border-black rounded-2xl p-4 text-center max-w-[340px] ov-card">
+          <div class="pixel text-[10px]">DEEP JUNGLE</div>
+          <div class="text-sm mt-2 font-bold">The farmer is walking home...<br>but a GIANT MANDRAKE blocks the path!</div>
+          <div class="text-xs mt-3 bg-green-100 p-2 rounded text-left ov-extra">
+            <span class="inline-block w-3 h-3 align-middle mr-1" style="background:#22c55e"></span> Looks away = <b>KEEP RUNNING RIGHT</b><br>
+            <span class="inline-block w-3 h-3 align-middle mr-1 mt-1" style="background:#ef4444"></span> Screams = <b>DUCK &amp; COVER EARS</b><br>
+            <span class="inline-block w-3 h-3 align-middle mr-1 mt-1" style="background:#b07a3a"></span> Wooden trap = <b>JUMP (UP)</b>
+          </div>
+          <button id="btnGo" class="btn-pixel btn-yellow mt-3 w-full">GO!</button>
+        </div>
+      </div>
+
+      <div id="buryOverlay" class="absolute inset-0 hidden flex-col items-center justify-end p-4 z-30" style="background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.15) 45%,rgba(0,0,0,.8) 100%)">
+        <div class="bg-[#fffbe8] border-4 border-black rounded-2xl p-4 text-center w-full max-w-[340px] mb-1 ov-card">
+          <div class="pixel text-[10px]">BURY IT!</div>
+          <div class="text-xs font-extrabold mt-1 ov-extra">Mash BURY to tuck it back underground!</div>
+          <div class="hud-bar mt-2" style="height:18px"><div id="buryFill" class="hud-fill" style="width:0%;background:#8ac154"></div></div>
+          <div class="pixel text-[9px] mt-1"><span id="buryTxt">0%</span> BURIED</div>
+          <button id="btnBury" class="btn-pixel mt-2 w-full" style="font-size:calc(14px*var(--u))">BURY! MASH!</button>
+          <div class="text-[11px] mt-1 opacity-70 ov-extra">tap fast!</div>
+        </div>
+      </div>
+
+      <div id="overOverlay" class="absolute inset-0 bg-black/80 hidden items-center justify-center p-5 z-40">
+        <div class="text-center bg-[#2b0f0f] border-4 border-red-500 rounded-2xl p-6 ov-card">
+          <div class="pixel text-red-400 text-lg">YOU FAINTED!</div>
+          <div class="text-white text-sm mt-2">The mandrake's cry was too loud...</div>
+          <div class="pixel text-[8px] text-white/60 mt-3 leading-[1.8] ov-extra">TIP: COVER YOUR EARS<br>THE MOMENT IT TURNS RED</div>
+          <button id="btnRetry" class="btn-pixel btn-red mt-4">RETRY</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="desktopHint" class="justify-center gap-2 py-1 bg-[#0f3d32] text-white pixel text-[7px] items-center text-center">
+      KEYBOARD: LEFT/RIGHT MOVE &nbsp;&bull;&nbsp; UP/W JUMP &nbsp;&bull;&nbsp; DOWN/S COVER EARS &nbsp;&bull;&nbsp; SPACE BURY
+    </div>
+
+    <div id="touchControls" class="on-game justify-between items-center hud pt-2 bg-[#0f3d32] gap-2">
+      <div class="flex gap-2">
+        <div id="tLeft" class="touch-btn">
+          <svg viewBox="0 0 9 7" width="27" height="21" shape-rendering="crispEdges"><g fill="#12332b">
+            <rect x="4" y="0" width="1" height="1"/><rect x="3" y="1" width="2" height="1"/><rect x="2" y="2" width="7" height="1"/><rect x="0" y="3" width="9" height="1"/><rect x="2" y="4" width="7" height="1"/><rect x="3" y="5" width="2" height="1"/><rect x="4" y="6" width="1" height="1"/>
+          </g></svg>
+        </div>
+        <div id="tRight" class="touch-btn">
+          <svg viewBox="0 0 9 7" width="27" height="21" shape-rendering="crispEdges"><g fill="#12332b">
+            <rect x="4" y="0" width="1" height="1"/><rect x="4" y="1" width="2" height="1"/><rect x="0" y="2" width="7" height="1"/><rect x="0" y="3" width="9" height="1"/><rect x="0" y="4" width="7" height="1"/><rect x="4" y="5" width="2" height="1"/><rect x="4" y="6" width="1" height="1"/>
+          </g></svg>
+        </div>
+      </div>
+      <div class="pixel text-[7px] text-white text-center hold-txt" style="line-height:1.9">HOLD TO<br>MOVE</div>
+      <div class="flex gap-2">
+      <div id="tJump" class="touch-btn" style="background:#bfe9ff">
+        <svg viewBox="0 0 7 8" width="21" height="24" shape-rendering="crispEdges"><g fill="#12332b">
+          <rect x="3" y="0" width="1" height="1"/><rect x="2" y="1" width="3" height="1"/><rect x="1" y="2" width="5" height="1"/><rect x="0" y="3" width="7" height="1"/><rect x="2" y="4" width="3" height="4"/>
+        </g></svg>
+      </div>
+      <div id="tCover" class="touch-btn" style="width:calc(100px*var(--u));background:#ffdf6b">
+        <svg viewBox="0 0 7 9" width="14" height="18" shape-rendering="crispEdges"><g fill="#12332b">
+          <rect x="2" y="0" width="3" height="4"/><rect x="0" y="4" width="7" height="1"/><rect x="1" y="5" width="5" height="1"/><rect x="2" y="6" width="3" height="2"/><rect x="3" y="8" width="1" height="1"/>
+        </g></svg>
+        <span class="pixel" style="font-size:calc(8px*var(--u))">COVER</span>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4 : WIN ================= -->
+  <div id="page-win" class="page">
+    <canvas id="winCanvas" class="absolute left-0 right-0 bottom-0 w-full" style="height:42%;opacity:.95"></canvas>
+    <div class="relative flex-1 flex flex-col items-center justify-center p-4 overflow-hidden z-10">
+      <div class="starburst-wrap relative">
+        <div class="burst">
+          <div>
+            <div class="pixel text-white" style="font-size:clamp(16px,5vw,calc(22px*var(--u)));text-shadow:2px 2px 0 rgba(0,0,0,.35)">MISSION<br>COMPLETE!</div>
+            <div class="pixel text-[7px] text-white mt-2" style="text-shadow:1px 1px 0 rgba(0,0,0,.4)">THE MANDRAKE SLEEPS AGAIN</div>
+            <canvas id="starCanvas" class="block mt-3 mx-auto" width="93" height="27"></canvas>
+          </div>
+        </div>
+      </div>
+      <div id="winStats" class="pixel relative z-10 text-[9px] text-white mt-4 bg-black/45 border-2 border-white/60 px-3 py-2 rounded-lg text-center" style="line-height:1.9;text-shadow:1px 1px 0 #04150f">TIME 0s &bull; HP 100</div>
+      <div class="relative mt-4 flex items-center gap-2" style="animation:floaty 2.6s ease-in-out infinite">
+        <div class="pixel text-[#5a6b00] bg-white px-3 py-2 rounded-full border-4 border-white" style="font-size:calc(18px*var(--u));text-shadow:1px 1px 0 #ddd">NEXT</div>
+        <button id="btnNext" class="w-14 h-14 rounded-full bg-[#ffe9b8] border-4 border-white text-2xl font-black text-[#b35a1a] shadow-lg active:scale-90" style="cursor:pointer">&#8250;</button>
+      </div>
+      <button id="btnReplay" class="btn-pixel btn-white mt-3" style="font-size:calc(9px*var(--u))">REPLAY</button>
+      <div class="pixel text-[8px] text-white/90 mt-3 blink win-hint" style="text-shadow:1px 1px 0 #04150f">mandrake is sleeping... shhhh</div>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 5 : LETTER ================= -->
+  <div id="page-letter" class="page dotted-bg p-5 justify-center">
+    <div class="letter-card bg-[#fffbe8] rounded-[28px] overflow-hidden border-4 border-[#2d6a1e] max-w-[380px] mx-auto w-full" style="animation:pop .45s steps(5) both">
+      <div class="bg-[#8ac154] px-4 py-3 flex items-center justify-between">
+        <div class="flex gap-2">
+          <div class="w-3 h-3 bg-white rounded-full"></div>
+          <div class="w-3 h-3 bg-white rounded-full"></div>
+          <div class="w-3 h-3 bg-white rounded-full"></div>
+        </div>
+        <svg viewBox="0 0 5 5" width="14" height="14" shape-rendering="crispEdges"><g fill="#ffffff">
+          <rect x="0" y="0" width="1" height="1"/><rect x="4" y="0" width="1" height="1"/>
+          <rect x="1" y="1" width="1" height="1"/><rect x="3" y="1" width="1" height="1"/>
+          <rect x="2" y="2" width="1" height="1"/>
+          <rect x="1" y="3" width="1" height="1"/><rect x="3" y="3" width="1" height="1"/>
+          <rect x="0" y="4" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/>
+        </g></svg>
+      </div>
+      <div class="p-5 text-center leading-relaxed">
+        <p class="font-black text-[15px]">OMG IT'S FINALLY HERE! Happy debut, Solan! Finally pulled this chaotic little obsessive mandrake out of the ground. Go out there, completely run the show, and trap all of us in your roots forever! Let's goooo!</p>
+        <canvas id="letterStars" class="block mt-3 mx-auto" width="106" height="18"></canvas>
+      </div>
+    </div>
+    <button id="btnHome" class="btn-pixel btn-yellow mx-auto mt-5">BACK TO HOME</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

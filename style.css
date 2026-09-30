@@ -1,0 +1,300 @@
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--u:1}
+html{font-size:calc(16px*var(--u,1))}
+html,body{height:100%;margin:0;overflow:hidden;background:#083f33;font-family:'Nunito',sans-serif}
+body{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%,#1a7a63 0%,#0c4d40 45%,#052a23 100%);position:relative;touch-action:manipulation}
+body::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 2px,transparent 2px);background-size:22px 22px;pointer-events:none}
+.pixel{font-family:'Press Start 2P',monospace;image-rendering:pixelated}
+#shell{position:relative;width:100vw;height:100vh;height:100dvh;background:#5f9c8e;overflow:hidden;display:flex;flex-direction:column;user-select:none;-webkit-user-select:none}
+.page{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;background:linear-gradient(180deg,#6fb09e 0%,#5f9c8e 60%,#4a8577 100%)}
+.page.active{display:flex}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.12) 18%,rgba(255,255,255,.02) 30%,#6aa99a 31%,#5d9a8c 100%);border:6px solid #d7e3de;border-radius:38px;box-shadow:inset 0 2px 12px rgba(255,255,255,.8),inset 0 -8px 18px rgba(0,0,0,.25),0 10px 0 rgba(0,0,0,.25);position:relative;overflow:hidden}
+.gloss::after{content:'';position:absolute;top:10px;left:18px;right:18px;height:34px;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0));border-radius:20px;filter:blur(1px);pointer-events:none}
+.btn-pixel{font-family:'Press Start 2P',monospace;background:#2f7a1f;color:#fff;border:4px solid #0f2f0a;box-shadow:0 5px 0 #0f2f0a,inset 0 3px 0 rgba(255,255,255,.4);border-radius:14px;padding:calc(14px*var(--u)) calc(18px*var(--u));font-size:calc(13px*var(--u));cursor:pointer;transition:transform .08s;user-select:none;-webkit-user-select:none}
+.btn-pixel:active{transform:translateY(4px);box-shadow:0 1px 0 #0f2f0a}
+.btn-yellow{background:#e8b53a;color:#3a2400;border-color:#5a3c00;box-shadow:0 5px 0 #5a3c00,inset 0 3px 0 rgba(255,255,255,.6)}
+.btn-yellow:active{box-shadow:0 1px 0 #5a3c00}
+.btn-red{background:#d63c2f;border-color:#5a0f0a;box-shadow:0 5px 0 #5a0f0a}
+.btn-red:active{box-shadow:0 1px 0 #5a0f0a}
+.btn-white{background:#fff;color:#114033;border-color:#114033;box-shadow:0 5px 0 #114033}
+.btn-white:active{box-shadow:0 1px 0 #114033}
+#loadBarWrap{border:4px solid #1d5a1e;border-radius:999px;height:44px;background:rgba(255,255,255,.15);overflow:hidden;position:relative}
+#loadBar{height:100%;width:0%;background:linear-gradient(180deg,#3a9a2e,#1d5a1e);border-radius:999px;transition:width .12s}
+#page-loading .glass{min-height:58%}
+.load-head{margin-bottom:64px}
+.burst{background:#8ac154;border:6px solid #fff;clip-path:polygon(50% 0%,60% 12%,73% 5%,75% 18%,89% 15%,86% 28%,100% 33%,90% 43%,98% 54%,84% 59%,86% 73%,72% 71%,68% 85%,58% 75%,50% 90%,42% 75%,32% 85%,28% 71%,14% 73%,16% 59%,2% 54%,10% 43%,0% 33%,14% 28%,11% 15%,25% 18%,27% 5%,40% 12%);display:flex;align-items:center;justify-content:center;text-align:center;padding:calc(56px*var(--u)) calc(34px*var(--u));animation:pop .5s steps(4) both}
+@keyframes pop{0%{transform:scale(.3) rotate(-8deg)}60%{transform:scale(1.1) rotate(2deg)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translate(0,0)}25%{transform:translate(-4px,3px)}50%{transform:translate(4px,-3px)}75%{transform:translate(-3px,-2px)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes blink{50%{opacity:0}}
+@keyframes glowPulse{0%,100%{opacity:.55}50%{opacity:1}}
+.shaking{animation:shake .15s infinite}
+.flash-red{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(255,0,0,.55) 100%);pointer-events:none;opacity:0;transition:opacity .15s}
+.touch-btn{user-select:none;-webkit-user-select:none;touch-action:none;background:rgba(255,255,255,.9);border:4px solid #12332b;border-radius:18px;box-shadow:0 5px 0 #12332b;width:calc(68px*var(--u));height:calc(62px*var(--u));display:flex;align-items:center;justify-content:center;gap:3px;cursor:pointer}
+.touch-btn:active,.touch-btn.held{background:#ffdf6b;transform:translateY(3px);box-shadow:0 2px 0 #12332b}
+.touch-btn svg{display:block;transform:scale(var(--u))}
+#touchControls{display:none}
+body.is-touch #touchControls.on-game{display:flex}
+body.is-touch #touchControls{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+#desktopHint{display:none}
+body:not(.is-touch) #desktopHint{display:flex}
+.dotted-bg{background-image:radial-gradient(#d6efe7 2.5px,transparent 2.6px),radial-gradient(#d6efe7 2.5px,transparent 2.6px);background-size:18px 18px;background-position:0 0,9px 9px}
+.letter-card{box-shadow:8px 8px 0 #2d6a1e}
+canvas{image-rendering:crisp-edges;image-rendering:pixelated}
+.hud-bar{height:12px;background:#12332b;border-radius:999px;overflow:hidden;border:2px solid #fff}
+.hud-fill{height:100%;transition:width .15s}
+#coverTitle{text-shadow:3px 3px 0 #04150f,-2px -2px 0 #04150f,2px -2px 0 #04150f,-2px 2px 0 #04150f,0 0 22px rgba(140,255,170,.35);letter-spacing:1px}
+.starburst-wrap{filter:drop-shadow(0 8px 0 rgba(0,0,0,.25))}
+.cover-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cover-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(3,22,17,.80) 0%,rgba(3,22,17,.30) 24%,rgba(3,22,17,.04) 42%,rgba(3,22,17,.30) 60%,rgba(3,22,17,.88) 100%)}
+.btn-glow{animation:glowPulse 2s infinite ease-in-out}
+.blink{animation:blink 1.4s infinite}
+@media(max-height:620px){
+  #page-loading .glass{min-height:0}
+  .load-head{margin-bottom:44px}
+  .burst{padding:40px 26px}
+  #winCanvas{height:32% !important}
+}
+
+/* ===== RESPONSIVE: layar penuh, skala UI mengikuti ukuran layar (--u diatur oleh JS) ===== */
+.text-\[7px\]{font-size:calc(7px*var(--u))!important}
+.text-\[8px\]{font-size:calc(8px*var(--u))!important}
+.text-\[9px\]{font-size:calc(9px*var(--u))!important}
+.text-\[10px\]{font-size:calc(10px*var(--u))!important}
+.text-\[11px\]{font-size:calc(11px*var(--u))!important}
+.text-\[15px\]{font-size:calc(15px*var(--u))!important}
+.max-w-\[340px\]{max-width:calc(340px*var(--u))!important}
+.max-w-\[360px\]{max-width:calc(360px*var(--u))!important}
+.max-w-\[380px\]{max-width:calc(380px*var(--u))!important}
+.col{width:100%;max-width:calc(460px*var(--u));margin-left:auto;margin-right:auto}
+.hud{padding-left:max(.75rem,calc((100% - 900px*var(--u))/2));padding-right:max(.75rem,calc((100% - 900px*var(--u))/2))}
+#page-loading .glass{width:min(100%,calc(520px*var(--u)));margin-left:auto;margin-right:auto}
+.how-card{max-height:92%;overflow-y:auto}
+#introOverlay,#buryOverlay,#overOverlay,#howModal{overflow-y:auto}
+@media(max-height:520px){
+  #coverTitle br{display:none}
+  #coverTitle{font-size:clamp(14px,4.2vw,22px)!important}
+  .cover-legend{display:none}
+  .cover-btns{flex-direction:row!important}
+  .btn-pixel{padding:8px 12px!important;font-size:10px!important}
+  .ov-extra,.win-hint{display:none}
+  .ov-card{padding:10px!important}
+  #page-letter{padding:10px!important}
+  .burst{padding:26px 34px}
+}
+@media(max-width:560px){.hold-txt{display:none}}
+
+/* =====================================================================
+   PENGGANTI TAILWIND: reset dasar + kelas utilitas yang dipakai game
+   (tidak butuh internet / CDN)
+   ===================================================================== */
+*,::before,::after{border-width:0;border-style:solid;border-color:#e5e7eb}
+html{line-height:1.5;-webkit-text-size-adjust:100%}
+h1{font-size:inherit;font-weight:inherit;margin:0}
+p{margin:0}
+button{font-family:inherit;font-size:100%;line-height:inherit;color:inherit;margin:0;padding:0;background-color:transparent;background-image:none;text-transform:none}
+svg,img,canvas{display:block}
+
+/* display & posisi */
+.block{display:block}
+.inline-block{display:inline-block}
+.flex{display:flex}
+.hidden{display:none}
+.flex-col{flex-direction:column}
+.flex-1{flex:1 1 0%}
+.relative{position:relative}
+.absolute{position:absolute}
+.inset-0{top:0;right:0;bottom:0;left:0}
+.left-0{left:0}.right-0{right:0}.bottom-0{bottom:0}
+.left-1\/2{left:50%}
+.top-3{top:.75rem}
+.-translate-x-1\/2{transform:translateX(-50%)}
+.z-10{z-index:10}.z-20{z-index:20}.z-30{z-index:30}.z-40{z-index:40}.z-50{z-index:50}
+.overflow-hidden{overflow:hidden}
+
+/* flex alignment */
+.items-center{align-items:center}
+.justify-center{justify-content:center}
+.justify-between{justify-content:space-between}
+.justify-end{justify-content:flex-end}
+.align-middle{vertical-align:middle}
+.gap-2{gap:.5rem}
+.gap-3{gap:.75rem}
+
+/* ukuran */
+.w-full{width:100%}
+.h-full{height:100%}
+.w-3{width:.75rem}.h-3{height:.75rem}
+.w-14{width:3.5rem}.h-14{height:3.5rem}
+
+/* spacing */
+.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}
+.px-2{padding-left:.5rem;padding-right:.5rem}
+.px-3{padding-left:.75rem;padding-right:.75rem}
+.px-4{padding-left:1rem;padding-right:1rem}
+.py-1{padding-top:.25rem;padding-bottom:.25rem}
+.py-2{padding-top:.5rem;padding-bottom:.5rem}
+.py-3{padding-top:.75rem;padding-bottom:.75rem}
+.py-\[3px\]{padding-top:3px;padding-bottom:3px}
+.pt-2{padding-top:.5rem}.pt-7{padding-top:1.75rem}
+.pb-1{padding-bottom:.25rem}
+.mx-auto{margin-left:auto;margin-right:auto}
+.-mx-6{margin-left:-1.5rem;margin-right:-1.5rem}
+.-mb-6{margin-bottom:-1.5rem}
+.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}
+.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}
+.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}
+.mr-1{margin-right:.25rem}
+
+/* teks */
+.text-center{text-align:center}
+.text-left{text-align:left}
+.text-right{text-align:right}
+.text-xs{font-size:.75rem;line-height:1rem}
+.text-sm{font-size:.875rem;line-height:1.25rem}
+.text-lg{font-size:1.125rem;line-height:1.75rem}
+.text-2xl{font-size:1.5rem;line-height:2rem}
+.font-bold{font-weight:700}
+.font-extrabold{font-weight:800}
+.font-black{font-weight:900}
+.leading-relaxed{line-height:1.625}
+.leading-\[1\.55\]{line-height:1.55}
+.leading-\[2\.2\]{line-height:2.2}
+.leading-\[1\.8\]{line-height:1.8}
+.tracking-widest{letter-spacing:.1em}
+.opacity-70{opacity:.7}
+
+/* warna teks */
+.text-white{color:#fff}
+.text-white\/80{color:rgba(255,255,255,.8)}
+.text-white\/90{color:rgba(255,255,255,.9)}
+.text-white\/70{color:rgba(255,255,255,.7)}
+.text-white\/60{color:rgba(255,255,255,.6)}
+.text-yellow-300{color:#fde047}
+.text-red-400{color:#f87171}
+.text-green-700{color:#15803d}
+.text-\[\#a8e6b8\]{color:#a8e6b8}
+.text-\[\#bdf0cd\]{color:#bdf0cd}
+.text-\[\#f0fff4\]{color:#f0fff4}
+.text-\[\#0f3d32\]{color:#0f3d32}
+.text-\[\#0f2f0a\]{color:#0f2f0a}
+.text-\[\#5a6b00\]{color:#5a6b00}
+.text-\[\#b35a1a\]{color:#b35a1a}
+
+/* warna latar */
+.bg-white{background-color:#fff}
+.bg-black\/45{background-color:rgba(0,0,0,.45)}
+.bg-black\/55{background-color:rgba(0,0,0,.55)}
+.bg-black\/70{background-color:rgba(0,0,0,.7)}
+.bg-black\/75{background-color:rgba(0,0,0,.75)}
+.bg-black\/80{background-color:rgba(0,0,0,.8)}
+.bg-white\/20{background-color:rgba(255,255,255,.2)}
+.bg-green-100{background-color:#dcfce7}
+.bg-\[\#fffbe8\]{background-color:#fffbe8}
+.bg-\[\#0f3d32\]{background-color:#0f3d32}
+.bg-\[\#4ade80\]{background-color:#4ade80}
+.bg-\[\#1a4a3e\]{background-color:#1a4a3e}
+.bg-\[\#2b0f0f\]{background-color:#2b0f0f}
+.bg-\[\#ffe9b8\]{background-color:#ffe9b8}
+.bg-\[\#8ac154\]{background-color:#8ac154}
+
+/* border */
+.border-2{border-width:2px}
+.border-4{border-width:4px}
+.border-y-4{border-top-width:4px;border-bottom-width:4px}
+.border-black{border-color:#000}
+.border-white{border-color:#fff}
+.border-red-500{border-color:#ef4444}
+.border-white\/40{border-color:rgba(255,255,255,.4)}
+.border-white\/60{border-color:rgba(255,255,255,.6)}
+.border-\[\#12332b\]{border-color:#12332b}
+.border-\[\#2d6a1e\]{border-color:#2d6a1e}
+
+/* sudut */
+.rounded{border-radius:.25rem}
+.rounded-lg{border-radius:.5rem}
+.rounded-2xl{border-radius:1rem}
+.rounded-full{border-radius:9999px}
+.rounded-\[28px\]{border-radius:28px}
+
+/* efek */
+.shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1)}
+.active\:scale-90:active{transform:scale(.9)}
+.p-2{padding:.5rem}
+
+/* =====================================================================
+   LOADING SCREEN: layar penuh (tanpa kartu kotak), menyesuaikan ukuran layar
+   ===================================================================== */
+#page-loading{padding:0}
+#page-loading .glass{
+  width:100%;height:100%;min-height:0;margin:0;
+  border:0;border-radius:0;box-shadow:none;background:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:1rem 1rem calc(96px*var(--u));
+}
+#page-loading .gloss::after{display:none}
+#page-loading .glass > .relative{width:min(88%,calc(560px*var(--u)));max-width:none!important}
+#page-loading .glass > div:last-child{
+  position:absolute;left:0;right:0;bottom:0;margin:0;
+}
+
+/* teks loading terbaca di atas latar hutan */
+#page-loading .pixel{text-shadow:2px 2px 0 rgba(0,0,0,.4)}
+#page-loading .glass > .relative{z-index:2}
+
+/* =====================================================================
+   PENYEMPURNAAN RESPONSIF (layar pendek, notch, font kecil, overscroll)
+   ===================================================================== */
+html,body{overscroll-behavior:none}
+
+/* 1) Win & Letter bisa di-scroll di HP landscape */
+#page-win,#page-letter{overflow-y:auto}
+#page-win > .flex-1{flex-shrink:0;overflow:visible}
+#page-letter{justify-content:flex-start}
+#page-letter > .letter-card{margin-top:auto}
+#page-letter > :last-child{margin-bottom:auto}
+
+/* 2) Notch / safe-area (iPhone landscape, dll) */
+.hud{
+  padding-left:max(.75rem,env(safe-area-inset-left),calc((100% - 900px*var(--u))/2));
+  padding-right:max(.75rem,env(safe-area-inset-right),calc((100% - 900px*var(--u))/2));
+}
+#page-game > .hud:first-child{padding-top:max(.5rem,env(safe-area-inset-top))}
+#page-cover > .z-20{
+  padding-left:max(1rem,env(safe-area-inset-left));
+  padding-right:max(1rem,env(safe-area-inset-right));
+  padding-top:max(1.75rem,env(safe-area-inset-top));
+  padding-bottom:max(1rem,env(safe-area-inset-bottom));
+}
+
+/* 3) Batas bawah ukuran font supaya tetap terbaca di HP kecil */
+.text-\[7px\]{font-size:max(8px,calc(7px*var(--u)))!important}
+.text-\[8px\]{font-size:max(8px,calc(8px*var(--u)))!important}
+.text-\[9px\]{font-size:max(9px,calc(9px*var(--u)))!important}
+.text-\[10px\]{font-size:max(9px,calc(10px*var(--u)))!important}
+.text-\[11px\]{font-size:max(10px,calc(11px*var(--u)))!important}
+
+/* loading di layar sangat pendek */
+@media(max-height:430px){
+  #loadTip{display:none}
+  .load-head{margin-bottom:40px}
+  #page-loading .glass{padding-bottom:calc(80px*var(--u))}
+}
+
+/* =====================================================================
+   HALAMAN SURAT: kartu ukuran medium + canvas confetti
+   ===================================================================== */
+#confettiCanvas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:20;display:block}
+#page-letter .letter-card{
+  max-width:min(92%,720px,calc(460px*var(--u)))!important;
+  box-shadow:10px 10px 0 #2d6a1e;
+}
+#page-letter .letter-card .p-5{padding:1.75rem 1.5rem}
+#page-letter .letter-card p{font-size:max(15px,calc(17px*var(--u)))!important;line-height:1.7}
+#page-letter .letter-card .pixel{font-size:max(9px,calc(10px*var(--u)))!important;margin-top:1rem}
+#page-letter .letter-card canvas{margin-top:1.1rem}
+@media(max-height:520px){
+  #page-letter .letter-card .p-5{padding:.9rem 1rem}
+  #page-letter .letter-card p{font-size:max(13px,calc(14px*var(--u)))!important;line-height:1.5}
+  #page-letter .letter-card canvas{margin-top:.6rem}
+}
